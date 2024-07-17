@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        bitset<100001> bitTable;
+        for(int num:nums){
+            if(bitTable[num+1]) return num;
+            else bitTable[num+1]=1;
+        }
+        return -1;
+    }
+};
