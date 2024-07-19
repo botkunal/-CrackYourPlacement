@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        return backspace(s) == backspace(t);
+    }
+    string backspace(string & s){
+        string st;
+        for(char c : s){
+            if(c!='#')
+                st.push_back(c);
+            else if(!st.empty())
+                st.pop_back();
+        }
+        return st;
+    }
+};
