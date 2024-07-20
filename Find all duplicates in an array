@@ -1,0 +1,13 @@
+class Solution {
+public:
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> ans;
+        for(auto num:nums){
+            if(nums[abs(num)-1]<0)      //Check if nums[abs(num)-1] is negative.
+                ans.push_back(abs(num));//If it is, then num is a duplicate, so add it to ans.
+            else
+                nums[abs(num)-1]*=-1;   //Otherwise, mark nums[abs(num)-1] as negative.
+        }
+        return ans;
+    }
+};
