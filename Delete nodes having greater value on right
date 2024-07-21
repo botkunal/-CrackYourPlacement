@@ -1,0 +1,13 @@
+class Solution
+{
+    public:
+    Node *compute(Node *head)
+    {
+        // your code goes here
+        if(!head or !head->next)
+            return head;
+        head->next = compute(head->next);
+        return head->next != NULL && head->data < head->next->data ?head->next:head;
+    }
+    
+};
