@@ -1,0 +1,21 @@
+class solution {
+  public:
+    long long multiplyTwoLists(Node *first, Node *second) {
+        // code here
+        long long modk=1000000007;
+        long long a=0,b=0;
+        
+        while(first || second){
+            if(first){
+                a=((a*10)%modk) + first->data;
+                first=first->next;
+            }
+            if(second){
+                b=((b*10)%modk) + second->data;
+                second=second->next;
+            }
+            
+        }
+        return ((a%modk)*(b%modk))%modk;
+    }
+};
