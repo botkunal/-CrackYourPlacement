@@ -1,0 +1,25 @@
+float findMedian(struct Node *root)
+{
+      //Code here
+    vector<int> ans;
+    stack<Node*> st;
+    
+    while(root || !st.empty()){
+        while(root){
+            st.push(root);
+            root=root->left;
+        }
+        root=st.top();st.pop();
+        ans.push_back(root->data);
+        root=root->right;
+    }
+    int n=ans.size();
+    float a;
+    //sort(ans.begin(),ans.end());
+    if(n%2==0){
+        a=(float)(ans[(n/2)-1]+ans[n/2])/2;
+    }else{
+        a=(float)(ans[n/2]);
+    }
+    return a;
+}
