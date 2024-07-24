@@ -1,0 +1,19 @@
+class Solution {
+public:
+bool isSameTree(TreeNode* s, TreeNode* t) {
+        if (!s && !t) return true;       // Both trees are empty
+        if (!s || !t) return false;      // One tree is empty, the other is not
+        if (s->val != t->val) return false;  // Values are different
+
+        // Recursively check the left and right subtrees
+        return isSameTree(s->left, t->left) && isSameTree(s->right, t->right);
+    }
+
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+        if (!root) return false;         // Main tree is empty
+        if (isSameTree(root, subRoot)) return true;  // Check if the trees are the same
+
+        // Recursively check the left and right subtrees
+        return isSubtree(root->left, subRoot) || isSubtree(root->right, subRoot);
+    }
+};
