@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    // Function to return Breadth First Traversal of given graph.
+    vector<int> bfsOfGraph(int V, vector<int> adj[]) {
+        // Code here
+        vector<int> bfsTraversal;   // Stores the BFS traversal order
+    vector<bool> visited(V, false);  // Keeps track of visited nodes
+    
+    queue<int> q;  // Queue to help with BFS
+    q.push(0);  // Start BFS from vertex 0
+    visited[0] = true;  // Mark the starting node as visited
+    
+    while (!q.empty()) {
+        int node = q.front();
+        q.pop();
+        bfsTraversal.push_back(node);
+        
+        // Visit all the adjacent nodes of the current node
+        for (int neighbour : adj[node]) {
+            if (!visited[neighbour]) {
+                q.push(neighbour);
+                visited[neighbour] = true;
+            }
+        }
+    }
+    
+    return bfsTraversal;
+    }
+};
