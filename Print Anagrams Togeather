@@ -1,0 +1,23 @@
+class Solution{
+  public:
+    vector<vector<string> > Anagrams(vector<string>& string_list) {
+        //code here
+        unordered_map<string,vector<string>> mp;
+        
+        for(string& str:string_list){
+            string sortstr = str;
+            sort(sortstr.begin(),sortstr.end());
+            mp[sortstr].push_back(str);
+        }
+        vector<vector<string>> ans;
+        for(auto& entry : mp){
+            vector<string>& temp = entry.second;
+            //sort(temp.begin(),temp.end());
+            ans.push_back(temp);
+        }
+        sort(ans.begin(),ans.end(),[](const vector<string>& a,const vector<string>& b){
+            return a[0]<b[0];
+        });
+        return ans;
+    }
+};
