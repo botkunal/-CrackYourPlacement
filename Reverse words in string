@@ -1,0 +1,39 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        reverse(s.begin(),s.end());
+        reverseWords(s,s.length());
+        return cleanSpace(s,s.length());
+    }
+private:
+    void reverseWords(string& s,int n){
+        int i=0;
+        int j=0;
+
+        while(i<n){
+            while(i<j || i<n && s[i]==' ')  //skip the space
+                ++i;
+            while(j<i || j<n && s[j]!=' ')  //skip the  space
+                ++j;
+            reverse(s.begin()+i,s.begin()+j);   //reverse the word
+        }
+    }
+
+    string cleanSpace(string& s,int n){
+        int i=0;
+        int j=0;
+
+        while(j<n){
+            while(j<n && s[j]==' ') //skip the  space
+                ++j;
+            while(j<n && s[j]!=' ') //keep on space
+                s[i++]=s[j++];
+            while(j<n && s[j]==' ') //skip the space
+                ++j;
+            if(j<n)                 //keep only one space
+                s[i++]=' ';
+        }
+
+        return s.substr(0,i);
+    }
+};
