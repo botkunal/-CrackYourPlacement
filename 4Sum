@@ -1,0 +1,31 @@
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> ans;
+        ranges::sort(nums);
+        if(nums.size()<4) return ans;
+        for(int i=0;i<nums.size()-3;i++){
+            if(i>0 && nums[i]==nums[i-1]) continue; //skip duplicate for 1st element
+            for(int j=i+1;j<nums.size()-2;j++){
+                if(j>i+1 && nums[j]==nums[j-1]) continue; //skip duplicate for 2nd elements ;
+
+                int left=j+1;
+                int right =nums.size()-1;
+                while(left<right){
+                    long long sum = (long long)nums[i]+nums[j]+nums[left]+nums[right];
+                    if(sum==target){
+                        ans.push_back({nums[i],nums[j],nums[left],nums[right]});
+                        while(left<right && nums[left]==nums[left+1]) ++left;           //skip duplicate for 3rd element
+                        while(left<right && nums[right] == nums[right-1]) --right;      //skip duplicate for 4th element
+                        ++left;--right;
+                    }else if(sum<target){
+                        ++left;
+                    }else{
+                        --right;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
