@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int maxp=INT_MIN;
+        int curp=1;
+            
+        for(int i=0;i<nums.size();i++)
+        {
+            curp*=nums[i];
+            maxp=max(maxp,curp);
+            if(curp==0)
+                curp=1;
+        }
+        curp=1;
+        for(int i=nums.size()-1;i>=0;--i)
+        {
+            curp*=nums[i];
+            maxp=max(maxp,curp);
+            if(curp==0)
+                curp=1;
+        }
+        return maxp;
+    }
+};
