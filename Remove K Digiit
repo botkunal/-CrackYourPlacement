@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        if(num.length()==k) return "0";
+        string ans="";
+        vector<char> st;
+        for(int i=0;i<num.length();i++){
+            while(k>0 && !st.empty() && st.back() > num[i]){
+                st.pop_back();
+                k--;
+            }
+            st.push_back(num[i]);
+        }
+        while(k-- > 0) st.pop_back();
+        
+        for(char c:st){
+            if(c=='0' && ans.empty()) continue;
+            ans+=c;
+        }
+        return ans.empty() ? "0" : ans;
+    }
+};
