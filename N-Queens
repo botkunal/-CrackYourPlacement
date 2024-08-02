@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        vector<vector<string>> ans;
+        vector<string> board(n,string(n,'.'));
+        vector<bool> col(n,false);
+        vector<bool> daig1(2*n-1,false);
+        vector<bool> daig2(2*n-1,false);
+        backTrack(0,n,board,ans,col,daig1,daig2);
+        return ans;
+    }
+private:
+    void backTrack(int row,int n,vector<string>& board,vector<vector<string>>& ans,vector<bool>& col,vector<bool>& daig1,vector<bool>& daig2){
+        if(row==n){
+            ans.push_back(board);
+            return;
+        }
+        for(int column=0;column<n;column++){
+            if(col[column] || daig1[row+column] || daig2[row-column+n-1])
+                continue;
+
+            board[row][column]='Q';
+            col[column]=true;
+            daig1[column+row]=true;
+            daig2[row-column+n-1]=true;
+            backTrack(row+1,n,board,ans,col,daig1,daig2);
+            board[row][column]='.';
+            col[column]=false;
+            daig1[row+column]=false;
+            daig2[row-column+n-1]=false;
+        }
+    }
+};
