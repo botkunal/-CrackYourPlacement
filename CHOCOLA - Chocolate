@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int minimalBreakingCost(int m, int n, vector<int>& x, vector<int>& y) {
+    // Sort the costs in descending order
+    sort(x.rbegin(), x.rend());
+    sort(y.rbegin(), y.rend());
+
+    int horizontal_pieces = 1;
+    int vertical_pieces = 1;
+    int total_cost = 0;
+    int i = 0, j = 0;
+
+    while (i < x.size() && j < y.size()) {
+        if (x[i] >= y[j]) {
+            total_cost += x[i] * horizontal_pieces;
+            vertical_pieces++;
+            i++;
+        } else {
+            total_cost += y[j] * vertical_pieces;
+            horizontal_pieces++;
+            j++;
+        }
+    }
+
+    while (i < x.size()) {
+        total_cost += x[i] * horizontal_pieces;
+        vertical_pieces++;
+        i++;
+    }
+
+    while (j < y.size()) {
+        total_cost += y[j] * vertical_pieces;
+        horizontal_pieces++;
+        j++;
+    }
+
+    return total_cost;
+}
+
+int main() {
+    int test_cases;
+    cin >> test_cases;
+    while (test_cases--) {
+        int m, n;
+        cin >> m >> n;
+        vector<int> x(m - 1);
+        vector<int> y(n - 1);
+
+        for (int i = 0; i < m - 1; ++i) {
+            cin >> x[i];
+        }
+        for (int i = 0; i < n - 1; ++i) {
+            cin >> y[i];
+        }
+
+        cout << minimalBreakingCost(m, n, x, y) << endl;
+    }
+
+    return 0;
+}
