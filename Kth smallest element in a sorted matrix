@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+
+        vector<int> nums;
+        for(vector<int> mat:matrix){
+            for(int num:mat){
+                nums.push_back(num);
+            }
+        }
+        ranges::sort(nums);
+        return nums[k-1];
+    }
+};
