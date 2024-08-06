@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n = grid.size();
+        bool found = false;
+        queue<pair<int, int>> q;
+
+        // Directions for moving up, down, left, right
+        vector<pair<int, int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+
+        // Helper function for DFS to mark the first island
+        function<void(int, int)> dfs = [&](int x, int y) {
+            if (x < 0 || y < 0 || x >= n || y >= n || grid[x][y] != 1) return;
+            grid[x][y] = 2; // Mark the cell as part of the first island
+            q.push({x, y});
+            for (auto [dx, dy] : directions) {
+                dfs(x + dx, y + dy);
+            }
+        };
+
+        // Find and mark the first island
+        for (int i = 0; i < n && !found; ++i) {
+            for (int j = 0; j < n && !found; ++j) {
+                if (grid[i][j] == 1) {
+                    dfs(i, j);
+                    found = true;
+                }
+            }
+        }
+
+        // BFS to find the shortest path from the first island to the second
+        int steps = 0;
+        while (!q.empty()) {
+            int size = q.size();
+            for (int i = 0; i < size; ++i) {
+                auto [x, y] = q.front();
+                q.pop();
+                for (auto [dx, dy] : directions) {
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (nx >= 0 && ny >= 0 && nx < n && ny < n) {
+                        if (grid[nx][ny] == 1) {
+                            return steps; // Found the second island
+                        }
+                        if (grid[nx][ny] == 0) {
+                            grid[nx][ny] = 2; // Mark as visited
+                            q.push({nx, ny});
+                        }
+                    }
+                }
+            }
+            ++steps;
+        }
+        return -1; // Should not reach here
+    }
+};
