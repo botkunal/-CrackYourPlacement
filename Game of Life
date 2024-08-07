@@ -1,0 +1,41 @@
+class Solution {
+public:
+    void gameOfLife(vector<vector<int>>& board) {
+        int m = board.size();
+        int n = board[0].size();
+        
+        // Directions array for the 8 neighbors
+        vector<vector<int>> directions = {{-1, -1}, {-1, 0}, {-1, 1},
+                                          { 0, -1},          { 0, 1},
+                                          { 1, -1}, { 1, 0}, { 1, 1}};
+        
+        // First pass: Use 2 bits to store the current and next state
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                int liveNeighbors = 0;
+                for (auto dir : directions) {
+                    int x = i + dir[0];
+                    int y = j + dir[1];
+                    if (x >= 0 && x < m && y >= 0 && y < n && (board[x][y] & 1)) {
+                        liveNeighbors++;
+                    }
+                }
+                
+                // Apply the rules to determine the next state
+                if ((board[i][j] & 1) && (liveNeighbors == 2 || liveNeighbors == 3)) {
+                    board[i][j] |= 2; // Mark as live in the next state
+                }
+                if (!(board[i][j] & 1) && liveNeighbors == 3) {
+                    board[i][j] |= 2; // Mark as live in the next state
+                }
+            }
+        }
+        
+        // Second pass: Update the board to the next state
+        for (int i = 0; i < m; ++i) {
+            for (int j = 0; j < n; ++j) {
+                board[i][j] >>= 1; // Shift to get the next state
+            }
+        }
+    }
+};
