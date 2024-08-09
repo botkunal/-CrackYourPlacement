@@ -1,0 +1,88 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+#include <stdio.h>
+#include <stdlib.h>
+using namespace std;
+
+struct Node
+{
+	int data;
+	struct Node *left;
+	struct Node *right;
+	
+	Node(int x){
+	    data = x;
+	    left = NULL;
+	    right = NULL;
+	}
+};
+
+void printInorder (struct Node* node)
+{
+	if (node == NULL)return;
+	printInorder(node->left);
+	printf("%d ", node->data);
+	printInorder (node->right);
+}
+
+Node* constructTree(int n, int pre[], char preLN[]);
+
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        Node* root = NULL;
+        int n;
+        cin>>n;
+        int pre[n];
+        char preLN[n];
+        for(int i=0; i<n; i++)cin>>pre[i];
+        for(int i=0; i<n; i++)cin>>preLN[i];
+        root = constructTree (n, pre, preLN);
+        printInorder(root);
+        cout<<endl;
+    }
+	return 0;
+}
+
+// } Driver Code Ends
+
+
+/*Structure of the Node of the binary tree is as
+struct Node
+{
+	int data;
+	struct Node *left;
+	struct Node *right;
+};
+*/
+// function should return the root of the new binary tree formed
+
+Node* constructTreeUtil(int pre[], char preLN[], int& index, int n) {
+        // Base case
+        if (index >= n) return NULL;
+
+        // Allocate memory for this node and increment index for subsequent nodes
+        Node* node = new Node(pre[index]);
+
+        // If this node is a leaf, return the node
+        if (preLN[index] == 'L') {
+            index++;
+            return node;
+        }
+
+        // If this node is not a leaf, then recursively build the left and right subtrees
+        index++;
+        node->left = constructTreeUtil(pre, preLN, index, n);
+        node->right = constructTreeUtil(pre, preLN, index, n);
+
+        return node;
+    }
+struct Node *constructTree(int n, int pre[], char preLN[])
+{
+    // Code here
+    int index=0;
+    return constructTreeUtil(pre,preLN,index,n);
+}
