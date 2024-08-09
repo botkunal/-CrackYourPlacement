@@ -1,0 +1,72 @@
+//{ Driver Code Starts
+// Initial template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+// User function template in C++
+
+class Solution {
+  public:
+    bool isPossible(const vector<int>& arr, int n, int m, int maxPages) {
+    int studentCount = 1;
+    int currentPages = 0;
+
+    for (int i = 0; i < n; i++) {
+        if (arr[i] > maxPages) return false; // If a single book has more pages than maxPages
+        if (currentPages + arr[i] > maxPages) {
+            studentCount++; // Allocate books to the next student
+            currentPages = arr[i];
+            if (studentCount > m) return false;
+        } else {
+            currentPages += arr[i];
+        }
+    }
+    return true;
+    }
+    // Function to find minimum number of pages.
+    long long findPages(int n,vector<int> arr ,int m) {
+        // code here
+        if (m > n) return -1; // More students than books is not possible
+
+    int low = *max_element(arr.begin(), arr.end()); // Lower bound of binary search
+    int high = accumulate(arr.begin(), arr.end(), 0); // Upper bound of binary search
+    long long int result = -1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (isPossible(arr, n, m, mid)) {
+            result = mid; // Possible to assign books with this `mid` as maximum pages
+            high = mid - 1; // Try for a better (smaller) solution
+        } else {
+            low = mid + 1; // Increase `mid` since this allocation was not possible
+        }
+    }
+    return result;
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<int> A(n);
+        for (int i = 0; i < n; i++) {
+            cin >> A[i];
+        }
+        int m;
+        cin >> m;
+        Solution ob;
+        cout << ob.findPages(n, A, m) << endl;
+    }
+    return 0;
+}
+
+// } Driver Code Ends
