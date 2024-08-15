@@ -1,0 +1,164 @@
+//{ Driver Code Starts
+//Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// Node Class
+class Node {
+public:
+    int data;
+    Node* next;
+
+    Node(int val) : data(val), next(NULL) {}
+};
+
+// Linked List Class
+class LinkedList {
+public:
+    Node* head;
+    Node* tail;
+
+    LinkedList() : head(NULL), tail(NULL) {}
+
+    // creates a new node with given value and appends it at the end of the linked list
+    void insert(int val) {
+        if (head == NULL) {
+            head = new Node(val);
+            tail = head;
+        } else {
+            tail->next = new Node(val);
+            tail = tail->next;
+        }
+    }
+};
+
+
+// } Driver Code Ends
+//User function Template for C++
+
+//User function Template for C++
+
+class Solution {
+public:
+    Node *reverse(Node *head){
+    Node *prev=NULL, *curr=head, *next=NULL;
+    while(curr){
+        next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+    }
+    return prev;
+}
+
+bool smallOrBig(Node *l1, Node *l2){
+    bool flag=true;
+    Node *p1=l1;
+    Node *p2=l2;
+    
+    while(p1 && p2){
+        if(p1->data>p2->data)flag=true;
+        else if(p2->data>p1->data) flag=false;
+        p1=p1->next;
+        p2=p2->next;
+    }
+    
+    if(!p1 && !p2)return flag;
+    
+    if(!p1)flag=false;
+    if(!p2)flag=true;
+    
+    return flag;
+}
+
+Node* subLinkedList(Node* l1, Node* l2)
+{
+    while(l1 && l1->data==0)l1=l1->next;
+    while(l2 && l2->data==0)l2=l2->next;
+    
+    if(!l1 && !l2)return new Node(0);
+    if(!l1)return l2;
+    if(!l2)return l1;
+    
+    l1=reverse(l1);
+    l2=reverse(l2);
+    
+    if(!smallOrBig(l1, l2))swap(l1, l2);
+    
+    int sub=l1->data-l2->data;
+    int borrow=sub<0?1:0;
+    int val=borrow==0?sub:10+sub;
+    Node *l3=new Node(val);
+    Node *p1=l1->next, *p2=l2->next, *p3=l3;
+    while(p1 && p2){
+        sub=p1->data-p2->data-borrow;
+        borrow=sub<0?1:0;
+        val=borrow==0?sub:10+sub;
+        p3->next=new Node(val);
+        p1=p1->next;
+        p2=p2->next;
+        p3=p3->next;
+    }
+    
+    while(p1 && borrow==1){
+        sub=p1->data-borrow;
+        borrow=sub<0?1:0;
+        val=borrow==0?sub:10+sub;
+        p3->next=new Node(val);
+        p1=p1->next;
+        p3=p3->next;
+    }
+    
+    if(p1)p3->next=p1;
+    
+    l3=reverse(l3);
+    while(l3 && l3->data==0)l3=l3->next;
+    return l3?l3:new Node(0);
+}
+};
+
+//{ Driver Code Starts.
+
+// prints the elements of linked list starting with head
+void printList(Node* n) {
+    while (n) {
+        cout << n->data;
+        n = n->next;
+    }
+    cout << endl;
+}
+
+int main() {
+    int t;
+    cin >> t;
+
+    for (int i = 0; i < t; ++i) {
+        int n;
+        cin >> n;
+        LinkedList LL1;
+        string l1,l2;
+        cin>>l1;
+        for (int j = 0; j < n; ++j) {
+            int x=(l1[j]-'0');
+            LL1.insert(x);
+        }
+
+        int m;
+        cin >> m;
+        LinkedList LL2;
+        cin>>l2;
+        for (int j = 0; j < m; ++j) {
+            int x=(l2[j]-'0');
+            LL2.insert(x);
+        }
+
+        Solution ob;
+        Node* res = ob.subLinkedList(LL1.head, LL2.head);
+        printList(res);
+    }
+
+    return 0;
+}
+
+// } Driver Code Ends
