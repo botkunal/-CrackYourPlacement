@@ -1,0 +1,71 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+struct petrolPump
+{
+    int petrol;
+    int distance;
+};
+
+
+// } Driver Code Ends
+/*
+The structure of petrolPump is 
+struct petrolPump
+{
+    int petrol;
+    int distance;
+};*/
+
+/*You are required to complete this method*/
+class Solution{
+  public:
+  
+    //Function to find starting point where the truck can start to get through
+    //the complete circle without exhausting its petrol in between.
+    int tour(petrolPump p[],int n)
+    {
+       //Your code here
+       int total_surplus = 0;
+        int current_surplus = 0;
+        int start_index = 0;
+
+        for (int i = 0; i < n; ++i) {
+            int surplus = p[i].petrol - p[i].distance;
+            total_surplus += surplus;
+            current_surplus += surplus;
+
+            // If current surplus is negative, move the start index to the next pump
+            if (current_surplus < 0) {
+                start_index = i + 1;
+                current_surplus = 0;
+            }
+        }
+
+        // If the total surplus is non-negative, the start_index is valid
+        return (total_surplus >= 0) ? start_index : -1;
+    }
+};
+
+
+
+//{ Driver Code Starts.
+
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+        petrolPump p[n];
+        for(int i=0;i<n;i++)
+            cin>>p[i].petrol>>p[i].distance;
+        Solution obj;
+        cout<<obj.tour(p,n)<<endl;
+    }
+}
+
+// } Driver Code Ends
