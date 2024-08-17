@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> uglynums(n);
+        uglynums[0]=1;
+        int i2=0,i3=0,i5=0;
+        int mulof2=2;
+        int mulof3=3;
+        int mulof5=5;
+
+        for(int i=1;i<n;i++){
+            int uglynum=min({mulof2,mulof3,mulof5});
+            uglynums[i]=uglynum;
+            if(uglynum==mulof2){
+                i2++;
+                mulof2=uglynums[i2]*2;
+            }
+            if(uglynum==mulof3){
+                i3++;
+                mulof3=uglynums[i3]*3;
+            }
+            if(uglynum==mulof5){
+                i5++;
+                mulof5=uglynums[i5]*5;
+            }
+        }
+        return uglynums[n-1];
+    }
+};
