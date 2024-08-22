@@ -1,0 +1,41 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* prev;
+    Node* next;
+    Node* child;
+};
+*/
+
+class Solution {
+public:
+    Node* flatten(Node* head) {
+        if(head==nullptr) return nullptr;
+
+        Node* curr=head;
+        stack<Node*> nodeStack;
+
+        while(curr!= nullptr){
+            if(curr->child != nullptr){
+                Node* nextNode = curr->next;
+
+                curr->next = curr->child;
+                curr->child->prev = curr;
+                curr->child = nullptr;
+
+                if(nextNode!= nullptr){
+                    nodeStack.push(nextNode);
+                }
+            }else if(curr->next == nullptr && !nodeStack.empty()){
+                Node* nextNode = nodeStack.top();
+                nodeStack.pop();
+                curr->next = nextNode;
+                nextNode->prev = curr;
+            }
+            curr=curr->next;
+        }
+        return head;
+    }
+};
