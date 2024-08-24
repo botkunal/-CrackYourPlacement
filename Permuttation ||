@@ -1,0 +1,63 @@
+class Solution {
+public:
+void backtrack(vector<int>& nums,
+               vector<int>& curr,
+               vector<vector<int> >& ans,
+               vector<bool>& visited)
+{
+ 
+    // If current permutation is complete
+    if ((int)curr.size() == (int)nums.size()) {
+        ans.push_back(curr);
+    }
+ 
+    // Traverse the input vector
+    for (int i = 0; i < (int)nums.size();
+         i++) {
+ 
+        // If index is already visited
+        if (visited[i])
+            continue;
+ 
+        // If the number is duplicate
+        if (i > 0 and nums[i] == nums[i - 1]
+            and !visited[i - 1])
+            continue;
+ 
+        // Set visited[i] flag as true
+        visited[i] = true;
+ 
+        // Push nums[i] to current vector
+        curr.push_back(nums[i]);
+ 
+        // Recursive function call
+        backtrack(nums, curr,
+                  ans, visited);
+ 
+        // Backtrack to the previous
+        // state by unsetting visited[i]
+        visited[i] = false;
+ 
+        // Pop nums[i] and place at
+        // the back of the vector
+        curr.pop_back();
+    }
+}
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(), nums.end());
+ 
+    // Stores distinct permutations
+    vector<vector<int> > ans;
+ 
+    vector<bool> visited(
+        (int)nums.size(), false);
+ 
+    // Store the current permutation
+    vector<int> curr;
+ 
+    // Find the distinct permutations of num
+    backtrack(nums, curr, ans, visited);
+ 
+    return ans;
+    }
+};
