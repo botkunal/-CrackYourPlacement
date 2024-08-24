@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int findMaxValueOfEquation(vector<vector<int>>& points, int k) {
+    deque<pair<int, int>> dq;  // Stores pairs of (y_i - x_i, x_i)
+    int maxVal = INT_MIN;
+    
+    for (const auto& point : points) {
+        int xj = point[0], yj = point[1];
+        
+        // Remove elements from the front that don't satisfy the condition x_j - x_i <= k
+        while (!dq.empty() && xj - dq.front().second > k) {
+            dq.pop_front();
+        }
+        
+        // If deque is not empty, calculate the potential max value
+        if (!dq.empty()) {
+            maxVal = max(maxVal, yj + xj + dq.front().first);
+        }
+        
+        // Maintain deque such that it contains only potential maximum candidates
+        int newVal = yj - xj;
+        while (!dq.empty() && dq.back().first <= newVal) {
+            dq.pop_back();
+        }
+        
+        dq.emplace_back(newVal, xj);
+    }
+    
+    return maxVal;
+}
+};
