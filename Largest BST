@@ -1,0 +1,22 @@
+Info largestBSTSubtree(Node* root, int &maxSize) {
+    if (!root) {
+        return {true, 0, INT_MAX, INT_MIN};
+    }
+
+    Info leftInfo = largestBSTSubtree(root->left, maxSize);
+    Info rightInfo = largestBSTSubtree(root->right, maxSize);
+
+    Info curr;
+    curr.size = leftInfo.size + rightInfo.size + 1;
+    curr.minValue = min(root->data, leftInfo.minValue);
+    curr.maxValue = max(root->data, rightInfo.maxValue);
+
+    if (leftInfo.isBST && rightInfo.isBST && root->data > leftInfo.maxValue && root->data < rightInfo.minValue) {
+        curr.isBST = true;
+        maxSize = max(maxSize, curr.size);
+    } else {
+        curr.isBST = false;
+    }
+
+    return curr;
+}
