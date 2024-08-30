@@ -1,0 +1,99 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution
+{
+	public:
+	void dfs(int v, vector<vector<int>>& adj, vector<bool>& visited, stack<int>& Stack) {
+    visited[v] = true;
+    for (int u : adj[v]) {
+        if (!visited[u]) {
+            dfs(u, adj, visited, Stack);
+        }
+    }
+    Stack.push(v);
+}
+
+void reverseDFS(int v, vector<int> transposeAdj[], vector<bool>& visited) {
+    visited[v] = true;
+    for (int u : transposeAdj[v]) {
+        if (!visited[u]) {
+            reverseDFS(u, transposeAdj, visited);
+        }
+    }
+}
+
+	//Function to find number of strongly connected components in the graph.
+    int kosaraju(int V, vector<vector<int>>& adj)
+    {
+        //code here
+        stack<int> Stack;
+        vector<bool> visited(V,false);
+        
+        // Step 1: Fill vertices in stack according to their finishing times
+    for (int i = 0; i < V; i++) {
+        if (!visited[i]) {
+            dfs(i, adj, visited, Stack);
+        }
+    }
+    
+    // Step 2: Create a reversed graph
+    vector<int> transposeAdj[V];
+    for (int v = 0; v < V; v++) {
+        for (int u : adj[v]) {
+            transposeAdj[u].push_back(v);
+        }
+    }
+    
+    // Step 3: Process all vertices in the order defined by Stack
+    fill(visited.begin(), visited.end(), false);
+    int sccCount = 0;
+    
+    while (!Stack.empty()) {
+        int v = Stack.top();
+        Stack.pop();
+        
+        // Process the component if not already visited
+        if (!visited[v]) {
+            reverseDFS(v, transposeAdj, visited);
+            sccCount++;
+        }
+    }
+    
+    return sccCount;
+    }
+};
+
+//{ Driver Code Starts.
+
+
+int main()
+{
+    
+    int t;
+    cin >> t;
+    while(t--)
+    {
+    	int V, E;
+    	cin >> V >> E;
+
+    	vector<vector<int>> adj(V);
+
+    	for(int i = 0; i < E; i++)
+    	{
+    		int u, v;
+    		cin >> u >> v;
+    		adj[u].push_back(v);
+    	}
+
+    	Solution obj;
+    	cout << obj.kosaraju(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+
+// } Driver Code Ends
